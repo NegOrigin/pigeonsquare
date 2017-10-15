@@ -38,7 +38,7 @@ public class Main extends Application {
 	        
 	        //Initialisation pigeons
 	        for(int i=0; i<nbPigeons; i++) {
-				Pigeon pigeon = new Pigeon(root);
+				Pigeon pigeon = new Pigeon(root, graines);
 				pigeons.add(pigeon);
 			}
 	        
@@ -49,9 +49,9 @@ public class Main extends Application {
 			        graines.add(graine);
 					
 					//test
-					for(Pigeon pigeon : pigeons) {
+					/*for(Pigeon pigeon : pigeons) {
 						pigeon.allerManger(graines);
-					}
+					}*/
 				}
 			});
 	        

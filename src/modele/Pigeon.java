@@ -3,6 +3,8 @@ package modele;
 import java.util.ArrayList;
 
 import javafx.animation.TranslateTransition;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -15,6 +17,8 @@ public class Pigeon {
 	private Circle circle;
 	private TranslateTransition transition;
 	
+	ArrayList<Graine> graines;
+	
 	Graine graineAppetissante;
 	double distanceMin;
 	
@@ -23,7 +27,7 @@ public class Pigeon {
 	double distanceFuite;
 	boolean enFuite = false;
 	
-	public Pigeon(Group root) {
+	public Pigeon(Group root, ArrayList<Graine> graines) {
 		circle = new Circle();
 		transition = new TranslateTransition();
 		
@@ -34,10 +38,83 @@ public class Pigeon {
 		circle.setTranslateY((int)(Math.random()*800));
 		
 		root.getChildren().add(circle);
+		
+		this.graines = graines;
+		
+		allerManger();
 	}
 	
-	public void allerManger(ArrayList<Graine> graines) {
-		//Si pigeon non en fuite
+	public void allerManger() {
+		//Après 0.1 seconde de pause, évaluation par l'estomac du pigeon
+		Task<Void> sleeper = new Task<Void>() {
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            public void handle(WorkerStateEvent event) {
+            	//Si pigeon non en fuite
+        		if(!enFuite) {
+        			//Réinitialisation recherche
+        			graineAppetissante = null;
+        			distanceMin = 5000;
+        			
+        			//Repérer la graine la plus appetissante
+        			for (int i = 0; i < graines.size(); i++) {
+        				Graine graine = graines.get(i);
+        				
+        				//Test graine bonne
+        				if(graine.getStatut() == 0) {
+        					Circle graineCircle = graine.getCircle();
+        					double distance;
+        					
+        					//Calcul distance
+        					distance = Math.sqrt(
+        							Math.pow(
+        								Math.abs(graineCircle.getTranslateX()
+        								- circle.getTranslateX()), 2)
+        							+ Math.pow(
+        								Math.abs(graineCircle.getTranslateY()
+        								- circle.getTranslateY()), 2));
+        					
+        					//Test distance plus courte
+        					if(distance < distanceMin) {
+        						//Mise à jour graine cible
+        						graineAppetissante = graine;
+        						distanceMin = distance;
+        					}
+        				}
+        			}
+        			
+        			//Aller vers la graine appetissante
+        			transition.stop();
+        			if(graineAppetissante != null) {
+        				transition.setToX(graineAppetissante.getCircle().getTranslateX());
+        				transition.setToY(graineAppetissante.getCircle().getTranslateY());
+        				transition.setDuration(Duration.seconds(distanceMin*0.003));
+        		        transition.setNode(circle);
+        		        transition.play();
+        		        
+        		        //Manger graine
+        		        transition.setOnFinished(new EventHandler<ActionEvent>() {
+        		        	public void handle(ActionEvent event) {
+        		        		graineAppetissante.etreMange();
+        					}
+        		        });
+        			}
+        		}
+            	
+            	//Après l'exécution, on rappelle la fonction
+            	allerManger();
+            }
+        });
+        new Thread(sleeper).start();
+		
+		/*//Si pigeon non en fuite
 		if(!enFuite) {
 			//Réinitialisation recherche
 			graineAppetissante = null;
@@ -72,20 +149,21 @@ public class Pigeon {
 			
 			//Aller vers la graine appetissante
 			transition.stop();
-			transition.setToX(graineAppetissante.getCircle().getTranslateX());
-			transition.setToY(graineAppetissante.getCircle().getTranslateY());
-			transition.setDuration(Duration.seconds(distanceMin*0.01));
-	        transition.setNode(circle);
-	        transition.play();
-	        
-	        //Manger graine
-	        transition.setOnFinished(new EventHandler<ActionEvent>() {
-	        	public void handle(ActionEvent event) {
-	        		graineAppetissante.etreMange();
-	        		//fuir();
-				}
-	        });
-		}
+			if(graineAppetissante != null) {
+				transition.setToX(graineAppetissante.getCircle().getTranslateX());
+				transition.setToY(graineAppetissante.getCircle().getTranslateY());
+				transition.setDuration(Duration.seconds(distanceMin*0.01));
+		        transition.setNode(circle);
+		        transition.play();
+		        
+		        //Manger graine
+		        transition.setOnFinished(new EventHandler<ActionEvent>() {
+		        	public void handle(ActionEvent event) {
+		        		graineAppetissante.etreMange();
+					}
+		        });
+			}
+		}*/
 	}
 	
 	public void fuir() {

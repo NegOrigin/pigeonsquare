@@ -70,7 +70,7 @@ public class Humain {
 	}
 	
 	public void faireFuire() {
-		//Après 0.5 seconde de pause, évaluation de la peur infligée aux pigeons
+		//Après 0.05 seconde de pause, évaluation de la peur infligée aux pigeons
 		Task<Void> sleeper = new Task<Void>() {
             protected Void call() throws Exception {
                 try {
