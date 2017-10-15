@@ -39,11 +39,11 @@ public class Humain {
 	}
 	
 	public void traverser() {
-		//Après 10 secondes de pause, l'humain traverse 
+		//Après 10 à 20 secondes de pause, l'humain traverse 
 		Task<Void> sleeper = new Task<Void>() {
             protected Void call() throws Exception {
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep((int)(Math.random()*10000)+10000);
                 } catch (InterruptedException e) {
                 }
                 return null;
