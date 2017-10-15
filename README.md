@@ -1,5 +1,12 @@
 # Devoir 8INF957 : Pigeon Square
 
-Projet réalisé dans le cadre du cours Programmation objet avancée.
+Devoir réalisé dans le cadre du cours Programmation objet avancée.
 
-Développé sous Eclipse avec JavaFX.
+## Equipe
+
+Raphael Almeida
+Corentin Frery
+
+## Environnement de développement
+
+Le devoir est développé sur Eclipse avec JavaFX.
