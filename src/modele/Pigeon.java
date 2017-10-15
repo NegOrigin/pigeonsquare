@@ -3,6 +3,8 @@ package modele;
 import java.util.ArrayList;
 
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -12,6 +14,9 @@ public class Pigeon {
 	
 	private Circle circle;
 	private TranslateTransition transition;
+	
+	Graine graineAppetissante = null;
+	double distanceMin = 5000;
 	
 	public Pigeon(Group root) {
 		circle = new Circle();
@@ -27,9 +32,6 @@ public class Pigeon {
 	}
 	
 	public void allerManger(ArrayList<Graine> graines) {
-		Graine graineAppetissante = null;
-		double distanceMin = 5000;
-		
 		//Repérer la graine la plus appetissante
 		for (int i = 0; i < graines.size(); i++) {
 			Graine graine = graines.get(i);
@@ -60,5 +62,11 @@ public class Pigeon {
 		transition.setDuration(Duration.seconds(distanceMin*0.01));
         transition.setNode(circle);
         transition.play();
+        
+        transition.setOnFinished(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+        		graineAppetissante.etreMange();
+			}
+        });
 	}
 }
