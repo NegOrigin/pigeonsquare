@@ -4,17 +4,17 @@ import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Humain extends Parent {
+public class Humain {
 	
 	private Circle circle;
 	private TranslateTransition transition;
 	
-	public Humain() {
+	public Humain(Group root) {
 		circle = new Circle();
 		
 		circle.setRadius(100);
@@ -23,7 +23,7 @@ public class Humain extends Parent {
 		circle.setTranslateX(-200);
 		circle.setTranslateY((int)(Math.random()*800));
 		
-		getChildren().add(circle);
+		root.getChildren().add(circle);
 		
 		traverser();
 	}

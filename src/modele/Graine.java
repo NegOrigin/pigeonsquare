@@ -3,17 +3,21 @@ package modele;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Graine extends Parent {
+public class Graine {
+	
+	private Group root;
 	
 	private int statut;
 	
 	private Circle circle;
 	
-	public Graine(double x, double y) {
+	public Graine(Group root, double x, double y) {
+		this.root = root;
+		
 		statut = 0;
 		
 		circle = new Circle();
@@ -24,7 +28,7 @@ public class Graine extends Parent {
 		circle.setTranslateX(x);
 		circle.setTranslateY(y);
 		
-		getChildren().add(circle);
+		root.getChildren().add(circle);
 		
 		Task<Void> sleeper = new Task<Void>() {
             protected Void call() throws Exception {
@@ -51,12 +55,12 @@ public class Graine extends Parent {
 	public void setStatut(int statut) {
 		this.statut = statut;
 		
-		getChildren().remove(circle);
+		root.getChildren().remove(circle);
 		
 		if(statut == 2) {
 			circle.setRadius(5);
 			circle.setFill(Color.BLACK);
-			getChildren().add(circle);
+			root.getChildren().add(circle);
 		}
 	}
 	

@@ -30,7 +30,7 @@ public class Main extends Application {
 	        
 	        ArrayList<Graine> graines = new ArrayList<Graine>();
 	        
-	        Humain humain = new Humain();
+	        Humain humain;
 	        
 	        for(int i=0; i<nbPigeons; i++) {
 				Pigeon pigeon = new Pigeon(root);
@@ -39,10 +39,8 @@ public class Main extends Application {
 	        
 	        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent event) {
-					Graine graine = new Graine(event.getSceneX(), event.getSceneY());
+					Graine graine = new Graine(root, event.getSceneX(), event.getSceneY());
 			        graines.add(graine);
-					
-					root.getChildren().add(graine);
 					
 					//test
 					for(Pigeon pigeon : pigeons) {
@@ -51,7 +49,7 @@ public class Main extends Application {
 				}
 			});
 	        
-	        root.getChildren().add(humain);
+	        humain = new Humain(root);
 	        
 			primaryStage.show();
 		} catch(Exception e) {
