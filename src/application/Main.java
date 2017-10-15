@@ -18,6 +18,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			//Configuration Scene et Stage
 			Group root = new Group();
 			Scene scene = new Scene(root, 1000, 800, Color.GREENYELLOW);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -25,18 +26,23 @@ public class Main extends Application {
 			primaryStage.setTitle("Pigeon Square");
 	        primaryStage.setResizable(false);
 	        
+	        //Déclarartion liste des pigeons
 	        int nbPigeons = 4;
 	        ArrayList<Pigeon> pigeons = new ArrayList<Pigeon>();
 	        
+	        //Déclarartion liste des graines
 	        ArrayList<Graine> graines = new ArrayList<Graine>();
 	        
+	        //Déclarartion humain
 	        Humain humain;
 	        
+	        //Initialisation pigeons
 	        for(int i=0; i<nbPigeons; i++) {
 				Pigeon pigeon = new Pigeon(root);
 				pigeons.add(pigeon);
 			}
 	        
+	        //Au clic de souris, initialisation d'une nouvelle graine
 	        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent event) {
 					Graine graine = new Graine(root, event.getSceneX(), event.getSceneY());
@@ -49,8 +55,10 @@ public class Main extends Application {
 				}
 			});
 	        
+	        //Initialisation humain
 	        humain = new Humain(root);
 	        
+	        //Affichage scene
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

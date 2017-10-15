@@ -3,6 +3,7 @@ package modele;
 import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -29,6 +30,7 @@ public class Humain {
 	}
 	
 	public void traverser() {
+		//Après 10 secondes de pause, l'humain traverse 
 		Task<Void> sleeper = new Task<Void>() {
             protected Void call() throws Exception {
                 try {
@@ -47,7 +49,12 @@ public class Humain {
                 transition.setNode(circle);
                 transition.play();
             	
-                traverser();
+              //Après la traversé, on rappelle la fonction pour le prochain passage
+                transition.setOnFinished(new EventHandler<ActionEvent>() {
+                	public void handle(ActionEvent event) {
+                		traverser();
+        			}
+                });
             }
         });
         new Thread(sleeper).start();

@@ -15,8 +15,8 @@ public class Pigeon {
 	private Circle circle;
 	private TranslateTransition transition;
 	
-	Graine graineAppetissante = null;
-	double distanceMin = 5000;
+	Graine graineAppetissante;
+	double distanceMin;
 	
 	public Pigeon(Group root) {
 		circle = new Circle();
@@ -32,14 +32,20 @@ public class Pigeon {
 	}
 	
 	public void allerManger(ArrayList<Graine> graines) {
+		//Réinitialisation recherche
+		graineAppetissante = null;
+		distanceMin = 5000;
+		
 		//Repérer la graine la plus appetissante
 		for (int i = 0; i < graines.size(); i++) {
 			Graine graine = graines.get(i);
 			
+			//Test graine bonne
 			if(graine.getStatut() == 0) {
 				Circle graineCircle = graine.getCircle();
 				double distance;
 				
+				//Calcul distance
 				distance = Math.sqrt(
 						Math.pow(
 							Math.abs(graineCircle.getTranslateX()
@@ -47,8 +53,10 @@ public class Pigeon {
 						+ Math.pow(
 							Math.abs(graineCircle.getTranslateY()
 							- circle.getTranslateY()), 2));
-						
+				
+				//Test distance plus courte
 				if(distance < distanceMin) {
+					//Mise à jour graine cible
 					graineAppetissante = graine;
 					distanceMin = distance;
 				}
@@ -63,6 +71,7 @@ public class Pigeon {
         transition.setNode(circle);
         transition.play();
         
+        //Manger graine
         transition.setOnFinished(new EventHandler<ActionEvent>() {
         	public void handle(ActionEvent event) {
         		graineAppetissante.etreMange();

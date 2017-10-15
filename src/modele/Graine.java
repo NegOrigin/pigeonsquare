@@ -11,7 +11,7 @@ public class Graine {
 	
 	private Group root;
 	
-	private int statut;
+	private int statut; //0=Bonne, 1=Mangée, 2=Mauvaise
 	
 	private Circle circle;
 	
@@ -30,6 +30,7 @@ public class Graine {
 		
 		root.getChildren().add(circle);
 		
+		//Après 5 secondes de pause, si la graine était toujours bonne, elle expire
 		Task<Void> sleeper = new Task<Void>() {
             protected Void call() throws Exception {
                 try {
@@ -53,10 +54,13 @@ public class Graine {
 	}
 
 	public void setStatut(int statut) {
+		//Mise à jour du statut de la graine
 		this.statut = statut;
 		
+		//Suppression de l'ancien cercle
 		root.getChildren().remove(circle);
 		
+		//Si la graine a expiré, ajout d'un cercle spécifique
 		if(statut == 2) {
 			circle.setRadius(5);
 			circle.setFill(Color.BLACK);
@@ -65,7 +69,9 @@ public class Graine {
 	}
 	
 	public void etreMange() {
-		setStatut(1);
+		//Si graine bonne, elle est mangée
+		if(statut == 0)
+			setStatut(1);
 	}
 	
 	public Circle getCircle() {
