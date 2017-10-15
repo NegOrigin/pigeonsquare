@@ -34,7 +34,8 @@ public class Main extends Application {
 	        ArrayList<Graine> graines = new ArrayList<Graine>();
 	        
 	        //Déclarartion humain
-	        Humain humain;
+	        @SuppressWarnings("unused")
+			Humain humain;
 	        
 	        //Initialisation pigeons
 	        for(int i=0; i<nbPigeons; i++) {
