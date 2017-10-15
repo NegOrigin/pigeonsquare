@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.ArrayList;
+
 import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -15,7 +17,11 @@ public class Humain {
 	private Circle circle;
 	private TranslateTransition transition;
 	
-	public Humain(Group root) {
+	private ArrayList<Pigeon> pigeons;
+	
+	private double distancePigeon;
+	
+	public Humain(Group root, ArrayList<Pigeon> pigeons) {
 		circle = new Circle();
 		
 		circle.setRadius(100);
@@ -26,7 +32,10 @@ public class Humain {
 		
 		root.getChildren().add(circle);
 		
+		this.pigeons = pigeons;
+		
 		traverser();
+		faireFuire();
 	}
 	
 	public void traverser() {
@@ -55,6 +64,40 @@ public class Humain {
                 		traverser();
         			}
                 });
+            }
+        });
+        new Thread(sleeper).start();
+	}
+	
+	public void faireFuire() {
+		//Après 0.5 seconde de pause, évaluation de la peur infligée aux pigeons
+		Task<Void> sleeper = new Task<Void>() {
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            public void handle(WorkerStateEvent event) {
+            	for(Pigeon pigeon : pigeons) {
+            		//Calcul distance humain/pigeon
+        			distancePigeon = Math.sqrt(
+        					Math.pow(
+        						Math.abs(circle.getTranslateX()
+        						- pigeon.getCircle().getTranslateX()), 2)
+        					+ Math.pow(
+        						Math.abs(circle.getTranslateY()
+        						- pigeon.getCircle().getTranslateY()), 2));
+        			
+        			if(distancePigeon < circle.getRadius()*2)
+        				pigeon.fuir();
+				}
+            	
+            	//Après l'exécution, on rappelle la fonction
+            	faireFuire();
             }
         });
         new Thread(sleeper).start();

@@ -56,7 +56,7 @@ public class Main extends Application {
 			});
 	        
 	        //Initialisation humain
-	        humain = new Humain(root);
+	        humain = new Humain(root, pigeons);
 	        
 	        //Affichage scene
 			primaryStage.show();
