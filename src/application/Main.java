@@ -47,11 +47,6 @@ public class Main extends Application {
 				public void handle(MouseEvent event) {
 					Graine graine = new Graine(root, event.getSceneX(), event.getSceneY());
 			        graines.add(graine);
-					
-					//test
-					/*for(Pigeon pigeon : pigeons) {
-						pigeon.allerManger(graines);
-					}*/
 				}
 			});
 	        
