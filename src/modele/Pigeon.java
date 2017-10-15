@@ -3,17 +3,17 @@ package modele;
 import java.util.ArrayList;
 
 import javafx.animation.TranslateTransition;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class Pigeon extends Parent {
+public class Pigeon {
 	
 	private Circle circle;
 	private TranslateTransition transition;
 	
-	public Pigeon() {
+	public Pigeon(Group root) {
 		circle = new Circle();
 		transition = new TranslateTransition();
 		
@@ -23,7 +23,7 @@ public class Pigeon extends Parent {
 		circle.setTranslateX((int)(Math.random()*1000));
 		circle.setTranslateY((int)(Math.random()*800));
 		
-		getChildren().add(circle);
+		root.getChildren().add(circle);
 	}
 	
 	public void allerManger(ArrayList<Graine> graines) {

@@ -33,10 +33,8 @@ public class Main extends Application {
 	        Humain humain = new Humain();
 	        
 	        for(int i=0; i<nbPigeons; i++) {
-				Pigeon pigeon = new Pigeon();
+				Pigeon pigeon = new Pigeon(root);
 				pigeons.add(pigeon);
-		        
-		        root.getChildren().add(pigeon);
 			}
 	        
 	        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
